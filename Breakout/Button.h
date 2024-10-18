@@ -17,7 +17,12 @@ private:
     sf::Text _text;
     sf::WindowBase* _window;
 
+    sf::Color _hoveredColour;
+    sf::Color _unhoveredColour;
+
     bool _clicked = false;
     bool _shown = false;
+    bool _colourSetToHovered = false;
+
 };
 
