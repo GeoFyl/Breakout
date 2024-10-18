@@ -10,6 +10,7 @@ Button::Button(float x, float y, std::string text, int fontSize, sf::Color backg
     _text.setFillColor(textColour);
     _text.setString(text);
 
+    // box fits around the text
     _shape.setPosition(_text.getGlobalBounds().getPosition() - _text.getGlobalBounds().getSize() * 0.05f);
     _shape.setSize(_text.getGlobalBounds().getSize() * 1.1f);
     _shape.setFillColor(backgroundColour);
@@ -34,7 +35,8 @@ void Button::update()
 
 void Button::render(sf::RenderWindow& window)
 {
-    if (_shown) {
+    // render only when visible
+    if (_shown) { 
         window.draw(_shape);
         window.draw(_text);
     }

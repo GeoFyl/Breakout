@@ -29,8 +29,8 @@ void GameManager::initialize()
 
     // Create buttons
     sf::Vector2 screenSize = _window->getSize();
-    Button* button = _ui->addButton(screenSize.x / 2, screenSize.y / 2, 48, sf::Color::White, sf::Color::Black, "Replay", "ReplayButton");
-    button->setOnClick([&] {restart(); });
+    Button* replay_button = _ui->addButton(screenSize.x / 2, screenSize.y / 2, 48, sf::Color::White, sf::Color::Black, "Replay", "ReplayButton"); // Replay button
+    replay_button->setOnClick([&] {restart(); }); // Sets restart as the callback function to be called by the replay button
 }
 
 void GameManager::update(float dt)
@@ -62,22 +62,25 @@ void GameManager::update(float dt)
 
     if (_pause)
     {
+        // Show the replay button
         _ui->getButton("ReplayButton")->setVisible(true);
         return;
     }
     else if (_lives <= 0)
     {
         _masterText.setString("Game over.");
+        // Show the replay button
         _ui->getButton("ReplayButton")->setVisible(true);
         return;
     }
     else if (_levelComplete)
     {
         _masterText.setString("Level completed.");
+        // Show the replay button
         _ui->getButton("ReplayButton")->setVisible(true);
         return;
     }
-    else _ui->getButton("ReplayButton")->setVisible(false);
+    else _ui->getButton("ReplayButton")->setVisible(false); // Hide the replay button
 
     // timer.
     _time += dt;
@@ -122,6 +125,7 @@ void GameManager::levelComplete()
     _levelComplete = true;
 }
 
+// restart the game. called by replay button
 void GameManager::restart()
 {
     _levelComplete = false;

@@ -13,7 +13,7 @@ public:
     void setVisible(bool val) { _shown = val; }
 private:
     sf::RectangleShape _shape;
-    std::function<void()> _onClick;
+    std::function<void()> _onClick; // callback for when clicked.
     sf::Text _text;
     sf::WindowBase* _window;
 
