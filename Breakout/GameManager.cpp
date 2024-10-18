@@ -31,11 +31,14 @@ void GameManager::initialize()
     sf::Vector2 screenSize = _window->getSize();
     Button* replay_button = _ui->addButton(screenSize.x / 2, screenSize.y / 2, 48, sf::Color::White, sf::Color::Black, "Replay", "ReplayButton"); // Replay button
     replay_button->setOnClick([&] {restart(); }); // Sets restart as the callback function to be called by the replay button
+
+    Button* quit_button = _ui->addButton(screenSize.x / 2, screenSize.y / 2 + 70, 48, sf::Color::White, sf::Color::Black, "Quit", "QuitButton"); // Quit button
+    quit_button->setOnClick([] {exit(0); });
 }
 
 void GameManager::update(float dt)
 {
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) exit(0);
+    //if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) exit(0);
 
     _powerupInEffect = _powerupManager->getPowerupInEffect();
     _ui->updatePowerupText(_powerupInEffect);
@@ -62,25 +65,33 @@ void GameManager::update(float dt)
 
     if (_pause)
     {
-        // Show the replay button
+        // Show the buttons
         _ui->getButton("ReplayButton")->setVisible(true);
+        _ui->getButton("QuitButton")->setVisible(true);
         return;
     }
     else if (_lives <= 0)
     {
         _masterText.setString("Game over.");
-        // Show the replay button
+        // Show the buttons
         _ui->getButton("ReplayButton")->setVisible(true);
+        _ui->getButton("QuitButton")->setVisible(true);
         return;
     }
     else if (_levelComplete)
     {
         _masterText.setString("Level completed.");
-        // Show the replay button
+        // Show the buttons
         _ui->getButton("ReplayButton")->setVisible(true);
+        _ui->getButton("QuitButton")->setVisible(true);
         return;
     }
-    else _ui->getButton("ReplayButton")->setVisible(false); // Hide the replay button
+    else {
+        // Hide the buttons
+        _ui->getButton("ReplayButton")->setVisible(false);
+        _ui->getButton("QuitButton")->setVisible(false);
+    }
+
 
     // timer.
     _time += dt;
