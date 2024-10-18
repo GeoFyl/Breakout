@@ -20,6 +20,8 @@ public:
     void levelComplete();
     void powerupEffect(POWERUPS pu, float t);
 
+    void restart();
+
     Paddle* getPaddle() const;
     BrickManager* getBrickManager() const;
     PowerupManager* getPowerupManager() const;

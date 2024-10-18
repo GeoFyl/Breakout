@@ -103,6 +103,12 @@ void Ball::setVelocity(float coeff, float duration)
     _timeWithPowerupEffect = duration;
 }
 
+void Ball::resetVelocity(float velocity, float direction_x, float direction_y)
+{
+    _velocity = velocity;
+    _direction = { direction_x, direction_y };
+}
+
 void Ball::setFireBall(float duration)
 {
     if (duration) 
@@ -113,4 +119,9 @@ void Ball::setFireBall(float duration)
     }
     _isFireBall = false;
     _timeWithPowerupEffect = 0.f;    
+}
+
+void Ball::setPosition(float x, float y)
+{
+    _sprite.setPosition(sf::Vector2(x, y));
 }

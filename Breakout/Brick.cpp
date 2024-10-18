@@ -19,3 +19,8 @@ sf::FloatRect Brick::getBounds() const
 {
     return _shape.getGlobalBounds();
 }
+
+void Brick::setDestroyed(bool val)
+{
+    _isDestroyed = val;
+}

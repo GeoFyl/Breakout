@@ -29,9 +29,8 @@ void GameManager::initialize()
 
     // Create buttons
     sf::Vector2 screenSize = _window->getSize();
-    Button* button = _ui->addButton(screenSize.x / 2, screenSize.y / 2, 48, sf::Color::White, sf::Color::Black, "Replay");
-    button->setVisible(true);
-    button->setOnClick([] {std::cout << "button click\n"; });
+    Button* button = _ui->addButton(screenSize.x / 2, screenSize.y / 2, 48, sf::Color::White, sf::Color::Black, "Replay", "ReplayButton");
+    button->setOnClick([&] {restart(); });
 }
 
 void GameManager::update(float dt)
@@ -42,18 +41,7 @@ void GameManager::update(float dt)
     _ui->updatePowerupText(_powerupInEffect);
     _ui->updateButtons();
     _powerupInEffect.second -= dt;
-    
 
-    if (_lives <= 0)
-    {
-        _masterText.setString("Game over.");
-        return;
-    }
-    if (_levelComplete)
-    {
-        _masterText.setString("Level completed.");
-        return;
-    }
     // pause and pause handling
     if (_pauseHold > 0.f) _pauseHold -= dt;
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::P))
@@ -71,10 +59,25 @@ void GameManager::update(float dt)
             _pauseHold = PAUSE_TIME_BUFFER;
         }
     }
+
     if (_pause)
     {
+        _ui->getButton("ReplayButton")->setVisible(true);
         return;
     }
+    else if (_lives <= 0)
+    {
+        _masterText.setString("Game over.");
+        _ui->getButton("ReplayButton")->setVisible(true);
+        return;
+    }
+    else if (_levelComplete)
+    {
+        _masterText.setString("Level completed.");
+        _ui->getButton("ReplayButton")->setVisible(true);
+        return;
+    }
+    else _ui->getButton("ReplayButton")->setVisible(false);
 
     // timer.
     _time += dt;
@@ -117,6 +120,18 @@ void GameManager::render()
 void GameManager::levelComplete()
 {
     _levelComplete = true;
+}
+
+void GameManager::restart()
+{
+    _levelComplete = false;
+    _pause = false;
+    _lives = 3;
+    _masterText.setString("");
+    _ball->setPosition(0, 300);
+    _ball->resetVelocity(400, 1, 1);
+    _ui->resetLife();
+    _brickManager->resetBricks();
 }
 
 sf::RenderWindow* GameManager::getWindow() const { return _window; }

@@ -68,23 +68,39 @@ void UI::updatePowerupText(std::pair<POWERUPS, float> powerup)
 }
 
 // Create and get ptr to new button
-Button* UI::addButton(float x, float y, int fontSize, sf::Color backgroundColour, sf::Color textColour, std::string text)
+Button* UI::addButton(float x, float y, int fontSize, sf::Color backgroundColour, sf::Color textColour, std::string text, std::string name)
 {
-	_buttons.push_back(std::move(Button(x, y, text, fontSize, backgroundColour, textColour, &_font, _window)));
-	return &_buttons.back();
+	if (!_buttons.count(name)) {
+		_buttons.insert({ name, new Button(x, y, text, fontSize, backgroundColour, textColour, &_font, _window) });
+		return _buttons[name];
+	}
+	return nullptr;
+}
+
+Button* UI::getButton(std::string name)
+{
+	if (_buttons.count(name)) return _buttons.at(name);
+	return nullptr;
 }
 
 // Update all buttons
 void UI::updateButtons()
 {
-	for (Button& button : _buttons) {
-		button.update();
+	for (auto& button : _buttons) {
+		button.second->update();
 	}
 }
 
 void UI::lifeLost(int lives)
 {
 	_lives[_lives.size() - 1 - lives].setFillColor(sf::Color::Transparent);
+}
+
+void UI::resetLife()
+{
+	for (auto& life : _lives) {
+		life.setFillColor(sf::Color::Red);
+	}
 }
 
 void UI::render()
@@ -96,7 +112,7 @@ void UI::render()
 	}
 
 	//Render buttons
-	for (Button& button : _buttons) {
-		button.render(*_window);
+	for (auto& button : _buttons) {
+		button.second->render(*_window);
 	}
 }

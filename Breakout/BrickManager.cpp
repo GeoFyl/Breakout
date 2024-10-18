@@ -23,6 +23,13 @@ void BrickManager::createBricks(int rows, int cols, float brickWidth, float bric
     }
 }
 
+void BrickManager::resetBricks()
+{
+    for (auto& brick : _bricks) {
+        brick.setDestroyed(false);
+    }
+}
+
 void BrickManager::render()
 {
     for (auto& brick : _bricks) {
@@ -46,10 +53,9 @@ int BrickManager::checkCollision(sf::CircleShape& ball, sf::Vector2f& direction)
             // unless it's horizontal (collision from side)
             collisionResponse = 1;
 
-        // Mark the brick as destroyed (for simplicity, let's just remove it from rendering)
-        // In a complete implementation, you would set an _isDestroyed flag or remove it from the vector
-        brick = _bricks.back();
-        _bricks.pop_back();
+        // Mark the brick as destroyed
+        brick.setDestroyed(true);
+
         break;
     }
     if (_bricks.size() == 0)
