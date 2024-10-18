@@ -26,12 +26,21 @@ void GameManager::initialize()
 
     // Create bricks
     _brickManager->createBricks(5, 10, 80.0f, 30.0f, 5.0f);
+
+    // Create buttons
+    sf::Vector2 screenSize = _window->getSize();
+    Button* button = _ui->addButton(screenSize.x / 2, screenSize.y / 2, 48, sf::Color::White, sf::Color::Black, "Replay");
+    button->setVisible(true);
+    button->setOnClick([] {std::cout << "button click\n"; });
 }
 
 void GameManager::update(float dt)
 {
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) exit(0);
+
     _powerupInEffect = _powerupManager->getPowerupInEffect();
     _ui->updatePowerupText(_powerupInEffect);
+    _ui->updateButtons();
     _powerupInEffect.second -= dt;
     
 

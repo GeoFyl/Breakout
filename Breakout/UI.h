@@ -4,6 +4,7 @@
 
 #include "CONSTANTS.h"
 #include "PowerupManager.h"
+#include "Button.h"
 
 class GameManager;
 
@@ -14,6 +15,8 @@ public:
 	~UI();
 
 	void updatePowerupText(std::pair<POWERUPS, float>);
+	Button* addButton(float x, float y, int fontSize, sf::Color backgroundColour, sf::Color textColour, std::string text);
+	void updateButtons();
 	void lifeLost(int lives);
 	void render();
 
@@ -25,6 +28,7 @@ private:
 	sf::Text _powerupText;
 
 	std::vector<sf::CircleShape> _lives;
+	std::vector<Button> _buttons;
 
 	static constexpr float LIFE_RADIUS = 15.0f;
 	static constexpr float LIFE_PADDING = 20.0f;

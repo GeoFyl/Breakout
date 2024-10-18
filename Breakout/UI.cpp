@@ -67,6 +67,21 @@ void UI::updatePowerupText(std::pair<POWERUPS, float> powerup)
 	}
 }
 
+// Create and get ptr to new button
+Button* UI::addButton(float x, float y, int fontSize, sf::Color backgroundColour, sf::Color textColour, std::string text)
+{
+	_buttons.push_back(std::move(Button(x, y, text, fontSize, backgroundColour, textColour, &_font, _window)));
+	return &_buttons.back();
+}
+
+// Update all buttons
+void UI::updateButtons()
+{
+	for (Button& button : _buttons) {
+		button.update();
+	}
+}
+
 void UI::lifeLost(int lives)
 {
 	_lives[_lives.size() - 1 - lives].setFillColor(sf::Color::Transparent);
@@ -78,5 +93,10 @@ void UI::render()
 	for (sf::CircleShape life : _lives)
 	{
 		_window->draw(life);
+	}
+
+	//Render buttons
+	for (Button& button : _buttons) {
+		button.render(*_window);
 	}
 }
