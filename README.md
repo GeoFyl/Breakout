@@ -32,4 +32,9 @@ fire ball (green)
 * Implement commentary with calls to an LLM such as LLama
 
 # Time Details and Changelist
-<Add information to this section about the time you've taken for this task along with a professional changelist.>
+Took 3hrs 20m overall
+* Fixed compiler error - 10 mins
+* Added button class which takes a lambda as a callback for onClick - ~2hrs
+* Added replay button to pause/win/lose screens and implemented funtionality to reset the game - ~40m
+* Updated comments and added quit button to menu ~15m
+* Improved button feedback by changing brightening/darkening the colour based on whether mouse is hovering over - ~15m
