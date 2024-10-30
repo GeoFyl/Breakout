@@ -4,7 +4,7 @@
 #include <iostream>
 
 GameManager::GameManager(sf::RenderWindow* window)
-    : _window(window), _paddle(nullptr), _ball(nullptr), _brickManager(nullptr), _powerupManager(nullptr),
+    : _window(window), _paddle(nullptr), _ballManager(nullptr), _brickManager(nullptr), _powerupManager(nullptr),
     _messagingSystem(nullptr), _ui(nullptr), _pause(false), _time(0.f), _lives(3), _pauseHold(0.f), _levelComplete(false),
     _powerupInEffect({ none,0.f }), _timeLastPowerupSpawned(0.f)
 {
@@ -20,8 +20,8 @@ void GameManager::initialize()
     _paddle = new Paddle(_window);
     _brickManager = new BrickManager(_window, this);
     _messagingSystem = new MessagingSystem(_window);
-    _ball = new Ball(_window, 400.0f, this); 
-    _powerupManager = new PowerupManager(_window, _paddle, _ball);
+    _ballManager = new BallManager(_window, 400.0f, this); 
+    _powerupManager = new PowerupManager(_window, _paddle, _ballManager);
     _ui = new UI(_window, _lives, this);
 
     // Create bricks
@@ -43,7 +43,6 @@ void GameManager::update(float dt)
     _powerupInEffect = _powerupManager->getPowerupInEffect();
     _ui->updatePowerupText(_powerupInEffect);
     _ui->updateButtons();
-    _powerupInEffect.second -= dt;
 
     // pause and pause handling
     if (_pauseHold > 0.f) _pauseHold -= dt;
@@ -109,7 +108,7 @@ void GameManager::update(float dt)
 
     // update everything 
     _paddle->update(dt);
-    _ball->update(dt);
+    _ballManager->Update(dt);
     _powerupManager->update(dt);
 }
 
@@ -124,7 +123,7 @@ void GameManager::loseLife()
 void GameManager::render()
 {
     _paddle->render();
-    _ball->render();
+    _ballManager->Render();
     _brickManager->render();
     _powerupManager->render();
     _window->draw(_masterText);
@@ -143,8 +142,8 @@ void GameManager::restart()
     _pause = false;
     _lives = 3;
     _masterText.setString("");
-    _ball->setPosition(0, 300);
-    _ball->resetVelocity(400, 1, 1);
+    _ballManager->GetPlayerBall()->setPosition(0, 300);
+    _ballManager->GetPlayerBall()->resetVelocity(400, 1, 1);
     _ui->resetLife();
     _brickManager->resetBricks();
 }

@@ -5,6 +5,7 @@
 #include "Ball.h"
 #include "BrickManager.h"
 #include "PowerupManager.h"
+#include "BallManager.h"
 #include "MessagingSystem.h"
 #include "UI.h"
 
@@ -43,7 +44,7 @@ private:
 
     sf::RenderWindow* _window;
     Paddle* _paddle;
-    Ball* _ball;
+    BallManager* _ballManager;
     BrickManager* _brickManager;
     PowerupManager* _powerupManager;
     MessagingSystem* _messagingSystem;

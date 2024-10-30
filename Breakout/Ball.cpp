@@ -1,12 +1,13 @@
 #include "Ball.h"
 #include "GameManager.h" // avoid cicular dependencies
+#include "BallManager.h"
 
-Ball::Ball(sf::RenderWindow* window, float velocity, GameManager* gameManager)
-    : _window(window), _velocity(velocity), _gameManager(gameManager),
+Ball::Ball(sf::RenderWindow* window, float velocity, GameManager* gameManager, BallManager* ballManager)
+    : _window(window), _velocity(velocity), _gameManager(gameManager), _ballManager(ballManager),
     _timeWithPowerupEffect(0.f), _isFireBall(false), _isAlive(true), _direction({1,1})
 {
     _sprite.setRadius(RADIUS);
-    _sprite.setFillColor(sf::Color::Cyan);
+    _sprite.setFillColor(sf::Color::Blue);
     _sprite.setPosition(0, 300);
 }
 
@@ -17,27 +18,29 @@ Ball::~Ball()
 void Ball::update(float dt)
 {
     // check for powerup, tick down or correct
-    if (_timeWithPowerupEffect > 0.f)
-    {
-        _timeWithPowerupEffect -= dt;
-    }
-    else
-    {
-        if (_velocity != VELOCITY)
-            _velocity = VELOCITY;   // reset speed.
+    if (!_isExtra) {
+        if (_timeWithPowerupEffect > 0.f)
+        {
+            _timeWithPowerupEffect -= dt;
+        }
         else
         {
-            setFireBall(0);    // disable fireball
-            _sprite.setFillColor(sf::Color::Cyan);  // back to normal colour.
-        }        
-    }
+            if (_velocity != VELOCITY)
+                _velocity = VELOCITY;   // reset speed.
+            else
+            {
+                setFireBall(0);    // disable fireball
+                _sprite.setFillColor(sf::Color::Cyan);  // back to normal colour.
+            }
+        }
 
-    // Fireball effect
-    if (_isFireBall)
-    {
-        // Flickering effect
-        int flicker = rand() % 50 + 205; // Random value between 205 and 255
-        _sprite.setFillColor(sf::Color(flicker, flicker / 2, 0)); // Orange flickering color
+        // Fireball effect
+        if (_isFireBall)
+        {
+            // Flickering effect
+            int flicker = rand() % 50 + 205; // Random value between 205 and 255
+            _sprite.setFillColor(sf::Color(flicker, flicker / 2, 0)); // Orange flickering color
+        }
     }
 
     // Update position with a subtle floating-point error
@@ -64,7 +67,13 @@ void Ball::update(float dt)
     {
         _sprite.setPosition(0, 300);
         _direction = { 1, 1 };
-        _gameManager->loseLife();
+        if (_isExtra) {
+            _isAlive = false;
+        }
+        else {
+            _gameManager->loseLife();
+        }
+        
     }
 
     // collision with paddle
@@ -124,4 +133,10 @@ void Ball::setFireBall(float duration)
 void Ball::setPosition(float x, float y)
 {
     _sprite.setPosition(sf::Vector2(x, y));
+}
+
+void Ball::setExtra(bool value)
+{
+    _isExtra = value;
+    if (!_isExtra) _sprite.setFillColor(sf::Color::Cyan);
 }

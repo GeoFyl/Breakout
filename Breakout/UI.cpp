@@ -61,6 +61,7 @@ void UI::updatePowerupText(std::pair<POWERUPS, float> powerup)
 		_powerupText.setFillColor(extraBallEffectsColour);
 		break;
 	case none:
+	default:
 		_powerupText.setString("");
 		
 		break;
