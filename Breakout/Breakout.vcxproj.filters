@@ -69,7 +69,7 @@
     <ClCompile Include="BallManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="PowerupMultiBall.cpp">
+    <ClCompile Include="PowerupMultiBalls.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -125,7 +125,7 @@
     <ClInclude Include="BallManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="PowerupMultiBall.h">
+    <ClInclude Include="PowerupMultiBalls.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
