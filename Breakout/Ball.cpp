@@ -1,9 +1,8 @@
 #include "Ball.h"
 #include "GameManager.h" // avoid cicular dependencies
-#include "BallManager.h"
 
-Ball::Ball(sf::RenderWindow* window, float velocity, GameManager* gameManager, BallManager* ballManager)
-    : _window(window), _velocity(velocity), _gameManager(gameManager), _ballManager(ballManager),
+Ball::Ball(sf::RenderWindow* window, float velocity, GameManager* gameManager)
+    : _window(window), _velocity(velocity), _gameManager(gameManager),
     _timeWithPowerupEffect(0.f), _isFireBall(false), _isAlive(true), _direction({1,1})
 {
     _sprite.setRadius(RADIUS);
@@ -17,8 +16,8 @@ Ball::~Ball()
 
 void Ball::update(float dt)
 {
-    // check for powerup, tick down or correct
     if (!_isExtra) {
+        // check for powerup, tick down or correct
         if (_timeWithPowerupEffect > 0.f)
         {
             _timeWithPowerupEffect -= dt;
@@ -73,7 +72,6 @@ void Ball::update(float dt)
         else {
             _gameManager->loseLife();
         }
-        
     }
 
     // collision with paddle
@@ -138,5 +136,8 @@ void Ball::setPosition(float x, float y)
 void Ball::setExtra(bool value)
 {
     _isExtra = value;
-    if (!_isExtra) _sprite.setFillColor(sf::Color::Cyan);
+
+    if (!_isExtra) {
+        _sprite.setFillColor(sf::Color::Cyan);
+    }
 }

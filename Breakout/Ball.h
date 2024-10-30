@@ -3,12 +3,12 @@
 
 
 class GameManager;  // forward declaration
-class BallManager;
+
 
 
 class Ball {
 public:
-    Ball(sf::RenderWindow* window, float velocity, GameManager* gameManager, BallManager* ballManager);
+    Ball(sf::RenderWindow* window, float velocity, GameManager* gameManager);
     ~Ball();
     void update(float dt);
     void render();
@@ -17,24 +17,21 @@ public:
     void setFireBall(float duration);
     void setPosition(float x, float y);
 
-    inline float getVelocity() { return _velocity; }
-    inline const sf::Vector2f& getDirection() { return _direction; }
     void setExtra(bool value);
-
-    void setAlive(bool val) { _isAlive = val; }
-    bool getAlive() { return _isAlive; }
+    inline void setAlive(bool value) { _isAlive = value; }
+    inline bool getAlive() { return _isAlive; }
 private:
     sf::CircleShape _sprite;
     sf::Vector2f _direction;
     sf::RenderWindow* _window;
     float _velocity;
     bool _isAlive;
-    bool _isFireBall;
     bool _isExtra = true;
+    bool _isFireBall;
     float _timeWithPowerupEffect;
 
     GameManager* _gameManager;  // Reference to the GameManager
-    BallManager* _ballManager;
+
 
     static constexpr float RADIUS = 10.0f;      
     static constexpr float VELOCITY = 350.0f;   // for reference.

@@ -1,10 +1,11 @@
 #include "BallManager.h"
+#include "CONSTANTS.h"
 
 BallManager::BallManager(sf::RenderWindow* window, float velocity, GameManager* gameManager)
 {
-	_playerBall = new Ball(window, velocity, gameManager, this);
+	_playerBall = new Ball(window, velocity, gameManager);
 
-	for (int i = 0; i < 9; i++) {
+	for (int i = 0; i < EXTRA_BALLS; i++) {
 		_extraBallsDead.push_back(new Ball(*_playerBall));
 	}
 
@@ -15,13 +16,13 @@ void BallManager::Update(float dt)
 {
 	_playerBall->update(dt);
 
-	if (!_extraBallsActive.empty()) {
-		for (auto it = _extraBallsActive.begin(); it != _extraBallsActive.end();) {
-			while (it != _extraBallsActive.end() && !(*it)->getAlive()) {
+	if (!_extraBallsAlive.empty()) {
+		for (auto it = _extraBallsAlive.begin(); it != _extraBallsAlive.end();) {
+			while (it != _extraBallsAlive.end() && !(*it)->getAlive()) {
 				_extraBallsDead.push_back(*it);
-				it = _extraBallsActive.erase(it);
+				it = _extraBallsAlive.erase(it);
 			}
-			if (it != _extraBallsActive.end()) {
+			if (it != _extraBallsAlive.end()) {
 				(*it)->update(dt);
 				it++;
 			}
@@ -33,25 +34,24 @@ void BallManager::Render()
 {
 	_playerBall->render();
 
-	if (!_extraBallsActive.empty()) {
-		for (Ball* ball : _extraBallsActive) {
+	if (!_extraBallsAlive.empty()) {
+		for (Ball* ball : _extraBallsAlive) {
 			ball->render();
 		}
 	}
 }
 
-void BallManager::ExtraBallsActive()
+void BallManager::SpawnExtraBalls()
 {
 	sf::Vector2f dir = { 1,1 };
-
 	float i = 0;
 
 	while (!_extraBallsDead.empty()) {
 		Ball* ball = _extraBallsDead.front();
 		ball->setAlive(true);
 		ball->resetVelocity(400, dir.x + i, dir.y + i);
-		_extraBallsActive.push_back(ball);
+		_extraBallsAlive.push_back(ball);
 		_extraBallsDead.pop_front();
-		i+= 0.2f;
+		i += 0.2f;
 	}
 }

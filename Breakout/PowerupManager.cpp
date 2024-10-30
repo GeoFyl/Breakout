@@ -58,7 +58,7 @@ void PowerupManager::spawnPowerup()
 {
 
     // TODO finish this.
-    switch (rand() % 6000)
+    switch (rand() % 6)
     {
     case 0:
         _powerups.push_back(new PowerupBigPaddle(_window, _paddle, _ballManager->GetPlayerBall()));
@@ -76,9 +76,8 @@ void PowerupManager::spawnPowerup()
         _powerups.push_back(new PowerupFireBall(_window, _paddle, _ballManager->GetPlayerBall()));
         break;
     case 5:
-    default:
-        _powerups.push_back(new PowerupMultiBall(_window, _paddle, _ballManager->GetPlayerBall(), _ballManager));
-       break;
+        _powerups.push_back(new PowerupMultiBalls(_window, _paddle, _ballManager->GetPlayerBall(), _ballManager));
+        break;
     }
 
 }

@@ -36,6 +36,7 @@ constexpr int BRICK_COLUMNS = 10;
 // Power-up settings
 constexpr float POWERUP_RADIUS = 15.0f;
 constexpr float POWERUP_SPEED = 150.0f;
+constexpr int EXTRA_BALLS = 9;
 
 // UI settings
 constexpr float UI_LIFE_RADIUS = 15.0f;
